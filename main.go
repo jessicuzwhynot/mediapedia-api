@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/HammerMeetNail/mediapedia-api/router"
+	"mediapedia-api/router"
 )
 
 func main() {

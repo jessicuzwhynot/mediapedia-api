@@ -1,7 +1,8 @@
 package router
 
 import (
-	"github.com/HammerMeetNail/mediapedia-api/handler"
+	"mediapedia-api/handler"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
