@@ -1,7 +1,7 @@
 # mediapedia-api
 An API for accessing media metadata
 
-# Contributing
+# Getting Started
 
 ```
 docker build -t mediapedia-api:local .
