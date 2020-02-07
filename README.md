@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/HammerMeetNail/mediapedia-api.svg?branch=master)](https://travis-ci.com/HammerMeetNail/mediapedia-api)
+[![Coverage Status](https://coveralls.io/repos/github/HammerMeetNail/mediapedia-api/badge.svg?branch=master)](https://coveralls.io/github/HammerMeetNail/mediapedia-api?branch=master)
 # mediapedia-api
 An API for accessing media metadata
 
