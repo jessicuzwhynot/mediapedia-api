@@ -1,0 +1,18 @@
+language: bash
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: Test
+      if: (tag IS NOT present)
+      script:
+      - docker build --target Test --tag "${TRAVIS_REPO_SLUG,,}":$TRAVIS_BUILD_ID .
+      - docker run --rm -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" "${TRAVIS_REPO_SLUG,,}":$TRAVIS_BUILD_ID goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN || travis_terminate 1;
+    - stage: Deploy
+      if: (tag =~ /(\d+\.){2}\d+/)
+      script: 
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - docker build --target Deploy --tag "${TRAVIS_REPO_SLUG,,}":$TRAVIS_TAG . || travis_terminate 1;
+      - docker push "${TRAVIS_REPO_SLUG,,}":$TRAVIS_TAG
