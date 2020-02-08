@@ -13,4 +13,6 @@ RUN go install
 FROM alpine:3.9 as Deploy
 COPY --from=Test /go/bin/mediapedia-api /app
 
+EXPOSE 1323
+
 ENTRYPOINT ["./app"]
