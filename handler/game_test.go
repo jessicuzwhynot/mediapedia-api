@@ -38,19 +38,23 @@ var (
 func TestGetGame(t *testing.T) {
 	// Setup
 	e := echo.New()
+	r := e.Router()
+	r.Add("GET", "/:jwt", func(echo.Context) error { return nil })
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/media/games/:id")
-	c.SetParamNames("id")
-	c.SetParamValues("123")
+	c.SetPath("/media/games/:gameID")
+	c.SetParamNames("gameID")
+	c.SetParamValues("5e3f4ddb2c9f1e0001c6403f")
 
 	database := mock.NewMockSession()
 	handler := &Handler{DB: database}
 
+	gameJSON := "{\"id\":\"5e3f4ddb2c9f1e0001c6403f\",\"name\":\"Test\",\"coverArt\":\"https://gamecoverart.com\",\"description\":\"Lorem Ipsum\",\"mediapediaRating\":96,\"metacritic\":95,\"publisher\":\"Microsoft\",\"releaseDate\":\"2019-12-31\",\"stores\":[{\"id\":\"\",\"name\":\"Steam\",\"url\":\"https://store.steampowered.com\"},{\"id\":\"\",\"name\":\"GOG\",\"url\":\"https://gog.com\"}]}\n"
+
 	// Assertions
 	if assert.NoError(t, handler.GetGame(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		// assert.Equal(t, userJSON, rec.Body.String())
+		assert.Equal(t, gameJSON, rec.Body.String())
 	}
 }

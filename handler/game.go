@@ -37,11 +37,11 @@ func (h *Handler) AddGame(c echo.Context) (err error) {
 		return
 	}
 
-	db := h.DB.Clone()
-	defer db.Close()
-	if err = db.DB("mediapedia").C("games").Insert(game); err != nil {
-		return
-	}
+	// db := h.DB.Clone()
+	// defer db.Close()
+	// if err = db.DB("mediapedia").C("games").Insert(game); err != nil {
+	// 	return
+	// }
 
 	return c.JSON(http.StatusOK, game)
 }
