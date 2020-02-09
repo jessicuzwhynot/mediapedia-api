@@ -9,6 +9,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// AddGame inserts game metadata into database
 func (h *Handler) AddGame(c echo.Context) (err error) {
 
 	game := &model.Game{
@@ -45,18 +46,36 @@ func (h *Handler) AddGame(c echo.Context) (err error) {
 	return c.JSON(http.StatusOK, game)
 }
 
+// GetGame retrieves game metadata from database
 func (h *Handler) GetGame(c echo.Context) (err error) {
 	gameID := c.Param("gameID")
 
-	game := model.Game{}
-	db := h.DB.Clone()
+	game := model.Game{ID: bson.ObjectIdHex(gameID),
+		Name:             "Test",
+		CoverArt:         "https://gamecoverart.com",
+		Description:      "Lorem Ipsum",
+		MediapediaRating: 96,
+		Metacritic:       95,
+		Publisher:        "Microsoft",
+		ReleaseDate:      "2019-12-31",
+		Stores: []model.Store{
+			model.Store{
+				Name: "Steam",
+				URL:  "https://store.steampowered.com",
+			},
+			model.Store{
+				Name: "GOG",
+				URL:  "https://gog.com",
+			},
+		}}
+	// db := h.DB.Clone()
 
-	if err = db.DB("mediapedia").C("games").FindId(bson.ObjectIdHex(gameID)).One(&game); err != nil {
-		return
+	// if err = db.DB("mediapedia").C("games").FindId(bson.ObjectIdHex(gameID)).One(&game); err != nil {
+	// 	return
 
-	}
+	// }
 
-	defer db.Close()
+	// defer db.Close()
 
 	return c.JSON(http.StatusOK, game)
 }

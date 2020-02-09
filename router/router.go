@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"mediapedia-api/client"
 	"mediapedia-api/handler"
 	"os"
 
@@ -11,12 +12,14 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
+// New connects to a database and starts mediapedia api
 func New() *echo.Echo {
 
 	// Get Runtime Params
 	mongoServerURL := os.Getenv("MONGO_SERVER_URL")
 	mongoUser := os.Getenv("MONGO_USER")
 	mongoPass := os.Getenv("MONGO_PASS")
+
 	// create a new echo instance
 	e := echo.New()
 	e.Logger.SetLevel(log.ERROR)
@@ -27,8 +30,8 @@ func New() *echo.Echo {
 
 	// Database connection
 	mongo := fmt.Sprintf("mongodb://%s:%s@%s", mongoUser, mongoPass, mongoServerURL)
-	fmt.Println(mongo)
-	db, err := mgo.Dial(mongo)
+	db, err := client.NewSession(mongo)
+	// db, err := mgo.Dial(mongo)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
@@ -49,7 +52,6 @@ func New() *echo.Echo {
 	e.GET("media/games/:gameID", handler.GetGame)
 	// e.GET("user/:userID/media", handler.GetMedia)
 	// e.GET("user/:userID/ratings", handler.GetRatings)
-	// e.GET("/main", handler.MainAdmin)
 
 	return e
 }

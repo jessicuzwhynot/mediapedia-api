@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"gopkg.in/mgo.v2"
+	"mediapedia-api/database"
 )
 
 type (
 	Handler struct {
-		DB *mgo.Session
+		DB database.Session
 	}
 )
