@@ -51,7 +51,7 @@ func (h *Handler) GetGame(c echo.Context) (err error) {
 	game := model.Game{}
 	db := h.DB.Clone()
 
-	if err = db.DB("mediapedia").C("games").FindId(gameID).One(&game); err != nil {
+	if err = db.DB("mediapedia").C("games").FindId(bson.ObjectIdHex(gameID)).One(&game); err != nil {
 		return
 
 	}

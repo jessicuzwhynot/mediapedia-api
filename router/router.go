@@ -1,7 +1,9 @@
 package router
 
 import (
+	"fmt"
 	"mediapedia-api/handler"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -10,6 +12,11 @@ import (
 )
 
 func New() *echo.Echo {
+
+	// Get Runtime Params
+	mongoServerURL := os.Getenv("MONGO_SERVER_URL")
+	mongoUser := os.Getenv("MONGO_USER")
+	mongoPass := os.Getenv("MONGO_PASS")
 	// create a new echo instance
 	e := echo.New()
 	e.Logger.SetLevel(log.ERROR)
@@ -19,7 +26,9 @@ func New() *echo.Echo {
 	e.Use(middleware.Recover())
 
 	// Database connection
-	db, err := mgo.Dial("localhost")
+	mongo := fmt.Sprintf("mongodb://%s:%s@%s", mongoUser, mongoPass, mongoServerURL)
+	fmt.Println(mongo)
+	db, err := mgo.Dial(mongo)
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
