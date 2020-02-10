@@ -37,11 +37,11 @@ func (h *Handler) AddGame(c echo.Context) (err error) {
 		return
 	}
 
-	// db := h.DB.Clone()
-	// defer db.Close()
-	// if err = db.DB("mediapedia").C("games").Insert(game); err != nil {
-	// 	return
-	// }
+	db := h.DB.Clone()
+	defer db.Close()
+	if err = db.DB("mediapedia").C("games").Insert(game); err != nil {
+		return
+	}
 
 	return c.JSON(http.StatusOK, game)
 }
@@ -68,14 +68,14 @@ func (h *Handler) GetGame(c echo.Context) (err error) {
 				URL:  "https://gog.com",
 			},
 		}}
-	// db := h.DB.Clone()
+	db := h.DB.Clone()
 
-	// if err = db.DB("mediapedia").C("games").FindId(bson.ObjectIdHex(gameID)).One(&game); err != nil {
-	// 	return
+	if err = db.DB("mediapedia").C("games").FindId(bson.ObjectIdHex(gameID)).One(&game); err != nil {
+		return
 
-	// }
+	}
 
-	// defer db.Close()
+	defer db.Close()
 
 	return c.JSON(http.StatusOK, game)
 }

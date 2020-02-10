@@ -5,6 +5,7 @@ import "github.com/globalsign/mgo"
 // Session is an interface to access to the Session struct.
 type Session interface {
 	DB(name string) DataLayer
+	Clone() Session
 	Close()
 }
 
@@ -17,6 +18,7 @@ type DataLayer interface {
 type Collection interface {
 	Find(query interface{}) Query
 	FindId(query interface{}) Query
+	Insert(...interface{}) error
 }
 
 // Query is an interface to access to the Query struct.

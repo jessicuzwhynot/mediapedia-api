@@ -22,6 +22,10 @@ func (s MongoSession) DB(name string) database.DataLayer {
 	return &MongoDatabase{Database: s.Session.DB(name)}
 }
 
+func (s MongoSession) Clone() database.Session {
+	return &MongoSession{Session: s.Session.Clone()}
+}
+
 // MongoCollection wraps a mgo.Collection to embed methods in models.
 type MongoCollection struct {
 	*mgo.Collection
@@ -36,6 +40,12 @@ func (m MongoCollection) Find(query interface{}) database.Query {
 func (m MongoCollection) FindId(query interface{}) database.Query {
 	return &MongoQuery{
 		Query: m.Collection.FindId(query),
+	}
+}
+
+func (m MongoCollection) Insert(docs ...interface{}) error {
+	return &MongoInsert{
+		error: mgo.er,
 	}
 }
 
@@ -55,4 +65,8 @@ type MongoQuery struct {
 
 func (q MongoQuery) Apply(change mgo.Change, result interface{}) (info *mgo.ChangeInfo, err error) {
 	return q.Query.Apply(change, result)
+}
+
+type MongoInsert struct {
+	error
 }
