@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"gopkg.in/mgo.v2"
+	"database/sql"
 )
 
 type (
 	Handler struct {
-		DB *mgo.Session
+		DB *sql.DB
 	}
 )

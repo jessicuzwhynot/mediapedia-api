@@ -8,8 +8,15 @@ An API for accessing media metadata
 ```
 $ docker build -t mediapedia-api:local .
 $ docker-compose up -d
-$ curl -X POST localhost/media/games
-{"id":"5e3f4ddb2c9f1e0001c6403f","name":"Test","coverArt":"https://gamecoverart.com","description":"Lorem Ipsum","mediapediaRating":96,"metacritic":95,"publisher":"Microsoft","releaseDate":"2019-12-31","stores":[{"id":"","name":"Steam","url":"https://store.steampowered.com"},{"id":"","name":"GOG","url":"https://gog.com"}]}
-$ curl localhost/media/games/5e3f4ddb2c9f1e0001c6403f
-{"id":"5e3f4ddb2c9f1e0001c6403f","name":"Test","coverArt":"https://gamecoverart.com","description":"Lorem Ipsum","mediapediaRating":96,"metacritic":95,"publisher":"Microsoft","releaseDate":"2019-12-31","stores":[{"id":"","name":"Steam","url":"https://store.steampowered.com"},{"id":"","name":"GOG","url":"https://gog.com"}]}
+$ curl http://localhost/media/games/1?pretty
+{
+  "id": "1",
+  "title": "Bloodborne",
+  "coverArt": "https://gamecoverart.com",
+  "description": "Lorem Ipsum",
+  "mediapediaRating": 96,
+  "metacritic": 95,
+  "publisher": "FromSoftware",
+  "releaseDate": "2019-12-31T00:00:00Z"
+}
 ```

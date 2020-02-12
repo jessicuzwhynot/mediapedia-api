@@ -6,57 +6,56 @@ import (
 	"mediapedia-api/model"
 
 	"github.com/labstack/echo/v4"
-	"gopkg.in/mgo.v2/bson"
 )
 
-func (h *Handler) AddGame(c echo.Context) (err error) {
+// func (h *Handler) AddGame(c echo.Context) (err error) {
 
-	game := &model.Game{
-		ID:               bson.NewObjectId(),
-		Name:             "Test",
-		CoverArt:         "https://gamecoverart.com",
-		Description:      "Lorem Ipsum",
-		MediapediaRating: 96,
-		Metacritic:       95,
-		Publisher:        "Microsoft",
-		ReleaseDate:      "2019-12-31",
-		Stores: []model.Store{
-			model.Store{
-				Name: "Steam",
-				URL:  "https://store.steampowered.com",
-			},
-			model.Store{
-				Name: "GOG",
-				URL:  "https://gog.com",
-			},
-		},
-	}
+// 	game := &model.Game{
+// 		Title:            "Test",
+// 		CoverArt:         "https://gamecoverart.com",
+// 		Description:      "Lorem Ipsum",
+// 		MediapediaRating: 96,
+// 		MetacriticRating: 95,
+// 		Publisher:        "Microsoft",
+// 		ReleaseDate:      "2019-12-31",
+// 		// Stores: []model.Store{
+// 		// 	model.Store{
+// 		// 		Name: "Steam",
+// 		// 		URL:  "https://store.steampowered.com",
+// 		// 	},
+// 		// 	model.Store{
+// 		// 		Name: "GOG",
+// 		// 		URL:  "https://gog.com",
+// 		// 	},
+// 		// },
+// 	}
 
-	if err = c.Bind(game); err != nil {
-		return
-	}
+// 	if err = c.Bind(game); err != nil {
+// 		return
+// 	}
 
-	db := h.DB.Clone()
-	defer db.Close()
-	if err = db.DB("mediapedia").C("games").Insert(game); err != nil {
-		return
-	}
+// 	// db := h.DB.Clone()
+// 	// defer db.Close()
+// 	// if err = db.DB("mediapedia").C("games").Insert(game); err != nil {
+// 	// 	return
+// 	// }
 
-	return c.JSON(http.StatusOK, game)
-}
+// 	return c.JSON(http.StatusOK, game)
+// }
 
+// GetGame retrieves corresponding game from db
 func (h *Handler) GetGame(c echo.Context) (err error) {
 	gameID := c.Param("gameID")
 
-	game := model.Game{}
-	db := h.DB.Clone()
+	game := &model.Game{}
 
-	if err = db.DB("mediapedia").C("games").FindId(bson.ObjectIdHex(gameID)).One(&game); err != nil {
-		return
+	sql := "SELECT id, title, cover_art, description, mediapedia_rating, metacritic_rating, publisher, release_date FROM game WHERE id=$1"
+	result := h.DB.QueryRow(sql, gameID)
+	err = result.Scan(&game.ID, &game.Title, &game.CoverArt, &game.Description, &game.MediapediaRating, &game.MetacriticRating, &game.Publisher, &game.ReleaseDate)
 
+	if err != nil {
+		return c.JSON(http.StatusNotFound, game)
 	}
-
-	defer db.Close()
 
 	return c.JSON(http.StatusOK, game)
 }

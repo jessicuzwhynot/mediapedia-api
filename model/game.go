@@ -1,25 +1,23 @@
 package model
 
-import (
-	"gopkg.in/mgo.v2/bson"
-)
-
 type (
+	// Store contains info for accessing a store
 	Store struct {
-		ID   bson.ObjectId `json:"id" bson:"_id,omitempty"`
-		Name string        `json:"name" bson:"name"`
-		URL  string        `json:"url" bson:"url"`
+		ID   string `json:"id"`
+		Name string `json:"name"`
+		URL  string `json:"url"`
 	}
 
+	// Game contains game info
 	Game struct {
-		ID               bson.ObjectId `json:"id" bson:"_id,omitempty"`
-		Name             string        `json:"name" bson:"name"`
-		CoverArt         string        `json:"coverArt" bson:"coverArt"`
-		Description      string        `json:"description" bson:"description"`
-		MediapediaRating int           `json:"mediapediaRating" bson:"mediapediaRating"`
-		Metacritic       int           `json:"metacritic" bson:"metacritic"`
-		Publisher        string        `json:"publisher" bson:"publisher"`
-		ReleaseDate      string        `json:"releaseDate" bson:"releaseDate"`
-		Stores           []Store       `json:"stores" bson:"stores"`
+		ID               string `json:"id"`
+		Title            string `json:"title"`
+		CoverArt         string `json:"coverArt"`
+		Description      string `json:"description"`
+		MediapediaRating int    `json:"mediapediaRating"`
+		MetacriticRating int    `json:"metacritic"`
+		Publisher        string `json:"publisher"`
+		ReleaseDate      string `json:"releaseDate"`
+		// Stores           []Store       `json:"stores"`
 	}
 )
